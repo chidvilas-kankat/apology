@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>A Quiet Message</title>
+<meta name="description" content="A private, intentional experience." />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet" />
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Cormorant Garamond',Georgia,serif;
+  background:hsl(220,20%,7%);
+  color:hsl(40,20%,92%);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  overflow:hidden;
+  height:100dvh;
+  user-select:none;
+}
+.grain{
+  position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat:repeat;background-size:200px 200px;
+}
+.wrap{
+  position:relative;height:100dvh;width:100%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:0 20px;overflow:hidden;
+}
+.card{
+  position:relative;z-index:10;width:100%;max-width:28rem;
+  border-radius:1rem;padding:2.5rem 1.75rem;
+  transition:background-color .6s ease,opacity .5s,transform .5s;
+}
+@media(min-width:640px){.card{padding:3.5rem 2.5rem}}
+.card.enter{animation:cardEnter .6s cubic-bezier(.16,1,.3,1) forwards,breathe 6s cubic-bezier(.4,0,.6,1) infinite .6s}
+.card.exit{animation:cardExit .4s cubic-bezier(.7,0,.84,0) forwards}
+@keyframes cardEnter{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes cardExit{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-16px)}}
+@keyframes breathe{
+  0%,100%{transform:scale(1) translateY(0);box-shadow:0 8px 40px -12px hsl(220 20% 0%/.5)}
+  50%{transform:scale(1.008) translateY(-2px);box-shadow:0 12px 50px -10px hsl(220 20% 0%/.6)}
+}
+.label{font-size:.75rem;letter-spacing:.25em;text-transform:uppercase;margin-bottom:2rem;opacity:.4;font-weight:300}
+.headline{font-size:1.5rem;font-weight:300;line-height:1.7;margin-bottom:2rem;white-space:pre-line}
+@media(min-width:640px){.headline{font-size:1.875rem}}
+.body{font-size:1rem;font-weight:300;line-height:1.7;opacity:.7;white-space:pre-line}
+@media(min-width:640px){.body{font-size:1.125rem}}
+.promises{list-style:none;margin-top:.5rem;display:flex;flex-direction:column;gap:1.25rem}
+.promises li{font-size:1rem;font-weight:300;line-height:1.7;opacity:.7;padding-left:1rem;border-left:1px solid hsl(40 20% 92%/.2)}
+@media(min-width:640px){.promises li{font-size:1.125rem}}
+.nav{position:fixed;bottom:0;left:0;right:0;z-index:20;display:flex;flex-direction:column;align-items:center;padding-bottom:2.5rem;padding-top:1.5rem}
+.dots{display:flex;gap:.5rem;margin-bottom:1.5rem}
+.dot{width:6px;height:6px;border-radius:50%;transition:all .5s;background:hsl(220,10%,28%)}
+.dot.active{background:hsl(40,20%,92%);transform:scale(1.3)}
+.btns{display:flex;align-items:center;gap:2.5rem}
+.btns button{
+  background:none;border:none;color:inherit;cursor:pointer;
+  font-family:inherit;font-size:.875rem;letter-spacing:.1em;text-transform:uppercase;
+  font-weight:300;padding:.5rem .75rem;transition:opacity .3s;
+}
+.btns .back{opacity:.4}
+.btns .back:hover{opacity:.7}
+.btns .next{opacity:.6}
+.btns .next:hover{opacity:1}
+.btns button:disabled{opacity:.15;cursor:default}
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="wrap">
+  <div class="card enter" id="card"></div>
+  <div class="nav">
+    <div class="dots" id="dots"></div>
+    <div class="btns">
+      <button class="back" id="backBtn">Back</button>
+      <button class="next" id="nextBtn">Next</button>
+    </div>
+  </div>
+</div>
+<script>
+const cards=[
+{label:"Acknowledgement",headline:"I broke a promise.\nAnd with that, I broke your trust.",body:"I'm not going to justify it.\nOr soften it with explanations."},
+{label:"Ownership",headline:"What hurt wasn't the mistake.\nIt was the lie.",body:"I understand that trust, once shaken,\ndoesn't come back just because someone feels sorry."},
+{label:"Reflection",headline:"I've been sitting with that.",body:"Not to fix things.\nNot to rush anything.\n\nJust to understand what I need to change."},
+{label:"Promises",headline:"These are not words for you to believe.\nThey're standards I'm setting for myself.",promises:["I will focus on my career and grow into someone stable, reliable, and grounded.","I will not lie to my parents or to people who genuinely care about me.","I will be there for you — without expectations, without pressure.","I will protect what matters, even when it's inconvenient.","I will take care of myself, physically and mentally."]},
+{label:"Reassurance",headline:"This isn't a request.",body:"There's nothing you need to say.\nNothing you need to decide.\n\nI just wanted to be honest — fully."},
+{label:"Closing",headline:"You're free to close this page whenever you want.",body:"I'll still be doing the work."}
+];
+const bgs=["hsl(220,15%,12%)","hsl(230,12%,13%)","hsl(210,14%,12%)","hsl(200,12%,13%)","hsl(240,10%,13%)","hsl(215,13%,11%)"];
+let cur=0,animating=false;
+const cardEl=document.getElementById("card"),dotsEl=document.getElementById("dots"),backBtn=document.getElementById("backBtn"),nextBtn=document.getElementById("nextBtn");
+function render(){
+  const c=cards[cur];
+  let h='<p class="label">'+c.label+'</p><h1 class="headline">'+c.headline+'</h1>';
+  if(c.body)h+='<p class="body">'+c.body+'</p>';
+  if(c.promises)h+='<ul class="promises">'+c.promises.map(p=>'<li>'+p+'</li>').join('')+'</ul>';
+  cardEl.innerHTML=h;
+  cardEl.style.backgroundColor=bgs[cur];
+  dotsEl.innerHTML=cards.map((_,i)=>'<div class="dot'+(i===cur?' active':'')+'"></div>').join('');
+  backBtn.disabled=cur===0;
+  nextBtn.disabled=cur===cards.length-1;
+}
+function goTo(n){
+  if(animating||n<0||n>=cards.length)return;
+  animating=true;
+  cardEl.className="card exit";
+  setTimeout(()=>{
+    cur=n;render();
+    cardEl.className="card enter";
+    if(navigator.vibrate)navigator.vibrate(8);
+    setTimeout(()=>{animating=false},600);
+  },400);
+}
+backBtn.onclick=()=>goTo(cur-1);
+nextBtn.onclick=()=>goTo(cur+1);
+let startY=0;
+window.addEventListener("touchstart",e=>{startY=e.touches[0].clientY},{passive:true});
+window.addEventListener("touchend",e=>{const d=startY-e.changedTouches[0].clientY;if(Math.abs(d)>60){d>0?goTo(cur+1):goTo(cur-1)}},{passive:true});
+render();
+</script>
+</body>
+</html>
